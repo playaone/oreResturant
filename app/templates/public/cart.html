@@ -1,0 +1,202 @@
+{% extends "public/layout.html" %}
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+
+    <!-- product-detail content -->
+    <div class="bg-main">
+        <div class="container">
+            <div class="box">
+                <div class="breadcumb">
+                    <a href="{{ url_for('public.index') }}">home</a>
+                    <span><i class='bx bxs-chevrons-right'></i></span>
+                    <a href="">all products</a>
+                    <span><i class='bx bxs-chevrons-right'></i></span>
+                    <a href="">cart</a>
+                </div>
+            </div>
+            <div class="row product-row">
+                <div class="col-8 col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            Review Cart
+                        </div>
+                        <div class="cart-items">
+                            <div class="user-info">
+                                <div class="user-avt">
+                                    <img src="" class="product-image" alt="">
+                                </div>
+                                <div class="user-name  col-6">
+                                    <strong class="p-title">my bag</strong>
+                                    <div>&#x20A6;<span class="price">10,000.00</span> </div>
+                                </div>
+                                <div class="product-quantity-wrapper col-2">
+                                    <span class="product-quantity-btn sub">
+                                        <i class='bx bx-minus'></i>
+                                    </span>
+                                    <span class="product-quantity">1</span>
+                                    <span class="product-quantity-btn add">
+                                        <i class='bx bx-plus'></i>
+                                    </span>
+                                </div>
+                                <div class="user-name col-2">
+                                    <h6>Total</h6>
+                                    <div>&#x20A6;<span class="item-total">10,000.00</span> </div>
+                                </div>
+                                <div class="col-1 remove">
+                                    <span class="">
+                                        <i class='bx bx-x'></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-md-12 bg-dark text-white pt-4">
+                    <div class="summary">
+                        <div class="box-header mb-3">Summary</div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>Items</div>
+                            <h4 class="cart-counter">1</h4>
+                        </div>
+                        <div class="mb-3">
+                            <label for="shipping">Shipping</label>
+                            <select name="shipping" id="shipping" class="form-control form-select">
+                                <option value="1">Rider</option>
+                                <option value="2">Waybill</option>
+                                <option value="3">Taxi</option>
+                            </select>
+                        </div>
+
+                        <hr class="mb-5">
+                        <div class="d-flex justify-content-between">
+                            <div>Total</div>
+                            <h5 class="cart-total">N10,000.00</h5>
+                        </div>
+
+                        <div class="mt-4 row px-3">
+                            <button class="btn btn-lg py-2 text-uppercase col-12 btn-light proceed">Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end product-detail content -->
+
+{% endblock content %}
+
+{% block scripts %}
+
+    <script>
+
+        cartDiv = document.querySelector('.cart-items')
+        cartItemToClone = document.querySelector('.user-info')
+
+        cartDiv.removeChild(cartItemToClone)
+        
+        cart.forEach(product => {
+
+            template = cartItemToClone.cloneNode(true)
+            
+            template.querySelector('.product-image').setAttribute('src', product.image)
+            template.querySelector('.p-title').textContent = product.productTitle
+            template.querySelector('.price').textContent = product.currentPrice
+            template.querySelector('.item-total').textContent = product.currentPrice
+            template.querySelector('.remove').dataset.id = product.productId
+            
+            cartDiv.appendChild(template)
+        })
+
+        function updateCartCounter(){
+            document.querySelector('.cart-counter').textContent = cart.length
+        }
+
+
+        function removeItem(item){
+            productId = item.querySelector('.remove').dataset['id']
+            removeCartItem(productId)
+
+            localStorage.setItem('jayboyCart', (JSON.stringify(cart)))
+
+            cartDiv.removeChild(item)
+            updateCartCounter()
+            setBadge();
+            updateCartTotal()
+        }
+
+
+        function setTotal(total){
+            cartTotal = document.querySelector('.cart-total')
+            cartTotal.textContent = new Intl.NumberFormat(undefined, {style: 'currency', currency: "NGN"}).format(total)
+        }
+
+
+        function updateCartTotal(){
+
+            itemsTotal = document.querySelectorAll('.item-total')
+
+            if (itemsTotal && itemsTotal != null){
+                let total = 0
+                itemsTotal.forEach(item => {
+                    let amount = item.textContent.replace('N', '')
+                    amount = amount.replace(',', '')
+                    total += parseInt(amount)
+                })
+
+                setTotal(total)
+            }
+        }
+        
+
+
+        (() => {
+[]
+            cartItems = document.querySelectorAll('.user-info')
+
+            cartItems.forEach(cartItem => {
+                cartItem.addEventListener('click', (e)=>{
+
+                    let price = cartItem.querySelector('.price').textContent
+                    let qnty = cartItem.querySelector('.product-quantity')
+                    productId = cartItem.querySelector('.remove').dataset.id
+
+                    if (e.target.classList.contains('add') || e.target.classList.contains('bx-plus')){
+                        x = qnty.textContent * 1 + 1
+                        updateProductQnty(productId, x, qnty)
+                    }else if(e.target.classList.contains('sub') || e.target.classList.contains('bx-minus')){
+                        x = qnty.textContent * 1 - 1
+                        updateProductQnty(productId, x, qnty)
+                    }else if(e.target.classList.contains('bx-x') || e.target.classList.contains('remove')){
+                        removeItem(cartItem)
+                    }
+                    
+                    cartItem.querySelector('.item-total').textContent = new Intl.NumberFormat().format(qnty.textContent * price )
+
+                    updateCartTotal()
+                })
+            })
+
+        })()
+
+        
+        updateCartTotal()
+
+        updateCartCounter()
+        
+
+    </script>
+
+    <script>
+        proceedBtn = document.querySelector('.proceed')
+
+        proceedBtn.addEventListener('click', ()=>{
+            $.post("{{url_for('public.cart')}}", JSON.stringify(cart), (data, status)=>{
+                if(status == 'success'){
+                    window.location.replace("{{url_for('public.checkout')}}")
+                }
+            })
+        })
+    </script>
+    
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "public/layout.html" %}
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+
+    <!-- product-detail content -->
+    <div class="bg-main">
+        <div class="container">
+            <div class="box">
+                <div class="breadcumb">
+                    <a href="#">Invoice</a>
+                </div>
+            </div>
+            <form action="#" method="post">
+                <div class="row product-row">
+                    <div class="col-12 bg-dark text-white pt-4">
+                        <div class="box">
+                            <p>Order Details</p> 
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>Status</p>
+                                <p class="text-{{status}}">
+                                    {{order.status}}
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>Amount</p> 
+                                <p>&#x20A6;{{"{:,.2f}".format(order.amount)}}</p>
+                            </div>
+                            <hr>
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>Email<p> 
+                                <p>{{order.email}}</p>
+                            </div>
+                            <hr>
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>Phone number<p> 
+                                <p>{{order.phone}}</p>
+                            </div>
+                            <hr>
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>Address<p> 
+                                <p>{{order.address}}</p>
+                            </div>
+                            <hr>
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>City</p> 
+                                <p>{{order.city}}</p>
+                            </div>
+                            <hr>
+                            <div class="box-header d-flex justify-content-between mb-3">
+                                <p>State</p> 
+                                <p>{{order.state}}</p>
+                            </div>
+                            <hr>
+
+                            <div class="py-4">
+                                <div class="mb-3">
+                                    {% if order.status == 'pending' %}
+                                        <a href="{{order.authorization_url}}" class="btn btn-lg btn-success">Pay</a>
+                                    {% elif order.status == 'success' %}
+                                        <h4 class="text-success">Paid</h4>
+                                    {% elif order.status == 'abandoned' %}
+                                        <h4 class="text-secondary">Abandoned</h4>
+                                    {% elif order.status == 'failed' %}
+                                        <h4 class="text-danger">Failed</h4>
+                                    {% else %}
+                                        <a href="{{url_for('public.invoice', reference=reference)}}" class="btn btn-lg btn-primary">Refresh</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- end product-detail content -->
+
+{% endblock content %}
+
+{% block scripts %}
+
+    <!-- app js -->
+    <script>
+        const server_image = "{{ url_for('static', filename='images/bag.jpeg') }}";
+    </script>
+    <script src="{{url_for('static', filename="js/app.js")}}"></script>
+
+    
+{% endblock %}

@@ -1,0 +1,292 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>OreResturant Admin {% block title %}{% endblock title %} </title>
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+
+    <!-- plugin css file  -->
+    {% block styles %}
+    {% endblock styles %}
+
+    <!-- project css file  -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ebazar.style.min.css') }}">
+</head>
+
+<body>
+    <div id="ebazar-layout" class="theme-blue">
+
+        <!-- sidebar -->
+        <div class="sidebar px-4 py-4 py-md-4 me-0">
+            <div class="d-flex flex-column h-100">
+                <a href="{{url_for('admin.home')}}" class="mb-0 brand-icon">
+                    <span class="logo-icon">
+                        <i class="bi bi-bag-check-fill fs-4"></i>
+                    </span>
+                    <span class="logo-text">OreResturant</span>
+                </a>
+                <!-- Menu: main ul -->
+                <ul class="menu-list flex-grow-1 mt-3">
+                    <li>
+                        <a class="m-link active" href="{{url_for('admin.home')}}">
+                            <i class="icofont-home fs-5"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="collapsed">
+                        <a class="m-link" data-bs-toggle="collapse" data-bs-target="#menu-product" href="#">
+                            <i class="icofont-truck-loaded fs-5"></i> <span>Products</span>
+                            <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span>
+                        </a>
+                        <!-- Menu: Sub menu ul -->
+                        <ul class="sub-menu collapse" id="menu-product">
+                            <li><a class="ms-link" href="{{ url_for('admin.all_products') }}">Product List</a></li>
+                            <li><a class="ms-link" href="{{ url_for('admin.add_product') }}">Product Add</a></li>
+                        </ul>
+                    </li>
+                    <li class="collapsed">
+                        <a class="m-link" data-bs-toggle="collapse" data-bs-target="#categories" href="#">
+                            <i class="icofont-chart-flow fs-5"></i> <span>Categories</span>
+                            <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span>
+                        </a>
+                        <!-- Menu: Sub menu ul -->
+                        <ul class="sub-menu collapse" id="categories">
+                            <li><a class="ms-link" href="{{ url_for('admin.categories') }}">Categories List</a></li>
+                            <li><a class="ms-link" href="{{ url_for('admin.add_category') }}">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="collapsed">
+                        <a class="m-link" data-bs-toggle="collapse" data-bs-target="#users" href="#">
+                            <i class="icofont-users fs-5"></i>
+                            <span>Users</span>
+                            <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span>
+                        </a>
+                        <!-- Menu: Sub menu ul -->
+                        <ul class="sub-menu collapse" id="users">
+                            <li><a class="m-link" href="{{url_for('admin.users')}}"> <span>All Users</span></a></li>
+                            <li><a class="m-link" href="{{url_for('admin.add_user')}}"> <span>Add User</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="collapsed">
+                        <a class="m-link" data-bs-toggle="collapse" data-bs-target="#orders" href="#">
+                            <i class="icofont-truck-loaded fs-5"></i> <span>Orders</span> <span
+                                class="arrow icofont-rounded-down ms-auto text-end fs-5"></span></a>
+                        <!-- Menu: Sub menu ul -->
+                        <ul class="sub-menu collapse" id="orders">
+                            <li><a class="ms-link" href="{{ url_for('admin.all_orders') }}">All Orders</a></li>
+                            <li><a class="ms-link" href="{{ url_for('admin.pending_orders') }}">Pending Orders</a></li>
+                            <li><a class="ms-link" href="{{ url_for('admin.successful_orders') }}">Completed Orders</a>
+                            </li>
+                            <li><a class="ms-link" href="{{ url_for('admin.failed_orders') }}">Failed Orders</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- <li class="collapsed">
+                            <a class="m-link" data-bs-toggle="collapse" data-bs-target="#menu-order" href="#">
+                            <i class="icofont-notepad fs-5"></i> <span>Orders</span> <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span></a>
+                            <ul class="sub-menu collapse" id="menu-order">
+                                <li><a class="ms-link" href="order-list.html">Orders List</a></li>
+                                <li><a class="ms-link" href="order-details.html">Order Details</a></li>
+                                <li><a class="ms-link" href="order-invoices.html">Order Invoices</a></li>
+                            </ul>
+                        </li>
+                        <li class="collapsed">
+                            <a class="m-link" data-bs-toggle="collapse" data-bs-target="#customers-info" href="#">
+                            <i class="icofont-funky-man fs-5"></i> <span>Customers</span> <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span></a>
+                            <ul class="sub-menu collapse" id="customers-info">
+                                <li><a class="ms-link" href="customers.html">Customers List</a></li>
+                                <li><a class="ms-link" href="customer-detail.html">Customers Details</a></li>
+                            </ul>
+                        </li> -->
+                    <!-- <li class="collapsed">
+                            <a class="m-link" data-bs-toggle="collapse" data-bs-target="#menu-inventory" href="#">
+                            <i class="icofont-chart-histogram fs-5"></i> <span>Inventory</span> <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span></a>
+                            
+                            <ul class="sub-menu collapse" id="menu-inventory">
+                                <li><a class="ms-link" href="">Stock List</a></li>
+                                <li><a class="ms-link" href="">Purchase</a></li>
+                                <li><a class="ms-link" href="">Supplier</a></li>
+                                <li><a class="ms-link" href="">Returns</a></li>
+                                <li><a class="ms-link" href="">Department</a></li>
+                            </ul>
+                        </li>
+                        <li class="collapsed">
+                            <a class="m-link" data-bs-toggle="collapse" data-bs-target="#menu-Componentsone" href="#"><i
+                                    class="icofont-ui-calculator"></i> <span>Accounts</span> <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span></a>
+                            
+                            <ul class="sub-menu collapse" id="menu-Componentsone">
+                                <li><a class="ms-link" href="">Invoices </a></li>
+                                <li><a class="ms-link" href="">Expenses </a></li>
+                                <li><a class="ms-link" href="">Salary Slip </a></li>
+                                <li><a class="ms-link" href="">Create Invoice </a></li>
+                            </ul>
+                        </li> -->
+                </ul>
+                <!-- Menu: menu collepce btn -->
+                <button type="button" class="btn btn-link sidebar-mini-btn text-light">
+                    <span class="ms-2"><i class="icofont-bubble-right"></i></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- main body area -->
+        <div class="main px-lg-4 px-md-4">
+
+            <!-- Body: Header -->
+            <div class="header">
+                <nav class="navbar py-4">
+                    <div class="container-xxl">
+
+                        <!-- header rightbar icon -->
+                        <div class="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">
+                            <div class="dropdown notifications">
+                                <a class="nav-link dropdown-toggle pulse" href="#" role="button"
+                                    data-bs-toggle="dropdown">
+                                    <i class="icofont-home fs-5"></i>
+                                    <span class="pulse-ring"></span>
+                                </a>
+                                <div id="HomePageDiv"
+                                    class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-md-end p-0 m-0 mt-3">
+                                    <div class="card border-0 w380">
+                                        <div class="card-header border-0 p-3">
+                                            <h5 class="mb-0 font-weight-light">
+                                                <span>HomePage</span>
+                                            </h5>
+                                        </div>
+                                        <div class="tab-content card-body">
+                                            <div class="tab-pane fade show active">
+                                                <ul class="list-unstyled list mb-0">
+                                                    <li class="py-2 mb-1 border-bottom">
+                                                        <a href="{{ url_for('public.index') }}" class="d-flex">
+                                                            Home Page
+                                                        </a>
+                                                    </li>
+                                                    <li class="py-2 mb-1 border-bottom">
+                                                        <a href="{{ url_for('public.contact') }}" class="d-flex">
+                                                            Contact Page
+                                                        </a>
+                                                    </li>
+                                                    <li class="py-2 mb-1 border-bottom">
+                                                        <a href="{{ url_for('public.about') }}" class="d-flex">
+                                                            About Page
+                                                        </a>
+                                                    </li>
+                                                    <li class="py-2 mb-1 border-bottom">
+                                                        <a href="{{ url_for('public.shop') }}" class="d-flex">
+                                                            Shop
+                                                        </a>
+                                                    </li>
+                                                    <li class="py-2 mb-1 border-bottom">
+                                                        <a href="{{ url_for('public.cart') }}" class="d-flex">
+                                                            Cart
+                                                        </a>
+                                                    </li>
+                                                    <li class="py-2">
+                                                        <a href="{{ url_for('public.profile') }}" class="d-flex">
+                                                            Customer Profile Page
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown user-profile ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
+                                <div class="u-info me-2">
+                                    <p class="mb-0 text-end line-height-sm "><span
+                                            class="font-weight-bold">{{ current_user.firstname }}
+                                            {{ current_user.lastname }}</span></p>
+                                    <small>Admin Profile</small>
+                                </div>
+                                <a class="nav-link dropdown-toggle pulse p-0" href="#" role="button"
+                                    data-bs-toggle="dropdown" data-bs-display="static">
+                                    <img class="avatar lg rounded-circle img-thumbnail"
+                                        src="{{ url_for('static', filename='images/profile_av.svg') }}" alt="profile">
+                                </a>
+                                <div
+                                    class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0">
+                                    <div class="card border-0 w280">
+                                        <div class="card-body pb-0">
+                                            <div class="d-flex py-1">
+                                                <img class="avatar rounded-circle"
+                                                    src="{{ url_for('static', filename='images/profile_av.svg') }}"
+                                                    alt="profile">
+                                                <div class="flex-fill ms-3">
+                                                    <p class="mb-0"><span
+                                                            class="font-weight-bold">{{ current_user.firstname }}
+                                                            {{ current_user.lastname }}</span></p>
+                                                    <small class="">{{ current_user.email }}</small>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <hr class="dropdown-divider border-dark">
+                                            </div>
+                                        </div>
+                                        <div class="list-group m-2 ">
+                                            <a href="admin-profile.html" class="list-group-item list-group-item-action border-0 ">
+                                                <i class="icofont-ui-user fs-5 me-3"></i>Profile Page
+                                            </a>
+                                            <a href="order-invoices.html" class="list-group-item list-group-item-action border-0 ">
+                                                <i class="icofont-file-text fs-5 me-3"></i>Order Invoices
+                                            </a>
+                                            <a href="{{ url_for('admin.logout') }}" class="list-group-item list-group-item-action border-0 ">
+                                                <i class="icofont-logout fs-5 me-3"></i>Sign Out
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- menu toggler -->
+                        <button class="navbar-toggler p-0 border-0 menu-toggle order-3" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#mainHeader">
+                            <span class="fa fa-bars"></span>
+                        </button>
+
+                        <!-- main menu Search-->
+                        <div class="order-0 col-lg-4 col-md-4 col-sm-12 col-12 mb-3 mb-md-0 ">
+                            <div class="input-group flex-nowrap input-group-lg">
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Body: Body -->
+            <div class="body d-flex py-3">
+
+                {% if get_flashed_messages() %}
+                    {% for category, message in get_flashed_messages(with_categories=True) %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            <strong>{{ message }}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block content %}
+                {% endblock content %}
+
+            </div>
+
+
+            {% block modal %}
+            {% endblock modal %}
+
+        </div>
+
+    </div>
+
+    {% block scripts %}
+    {% endblock scripts %}
+
+</body>
+
+</html>
