@@ -1,0 +1,27 @@
+{% extends 'layout.html '%}
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block styles %}
+<!--plugin css file -->
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/dataTables.bootstrap5.min.css') }}">
+{% endblock styles %}
+
+{% block content %}
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+<!-- Jquery Core Js -->      
+<script src="{{ url_for('static', filename='bundles/libscripts.bundle.js' )}}"></script>
+
+
+<!-- Jquery Page Js -->   
+<script src="{{ url_for('static', filename='js/template.js') }}"></script>
+
+{% endblock scripts %}
+
+{{ url_for('static', filename='')}}

@@ -1,0 +1,96 @@
+{% extends 'layout.html '%}
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block styles %}
+    <!--plugin css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugin/multi-select/css/multi-select.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugin/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugin/cropper/cropper.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugin/dropify/dist/css/dropify.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/responsive.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/dataTables.bootstrap5.min.css') }}">
+{% endblock styles %}
+
+{% block content %}
+    <div class="container-xxl">
+
+        <form action="#" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row align-items-center">
+                <div class="border-0 mb-4">
+                    <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                        <h3 class="fw-bold mb-0">Add Category</h3>
+                        {{ form.submit(class="btn btn-primary btn-set-task w-sm-100 py-2 px-5 text-uppercase") }}
+                    </div>
+                </div>
+            </div> <!-- Row end  -->  
+            
+            <div class="row g-3 mb-3">
+                <div class="col">
+                    <div class="sticky-lg-top">
+                        <div class="card mb-3">
+                            <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                                <h6 class="m-0 fw-bold">Add Category</h6>
+                            </div>
+                            <div class="card-body">
+                                    <div class="col-md-12">
+                                        {{ form.title.label(class='form-label') }}
+    
+                                        {% if form.title.errors %}
+                                            {{ form.title(class='form-control form-control-lg is-invalid', value=form.title.data) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.title.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.title(class='form-control') }}
+                                        {% endif %}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                                <h6 class="m-0 fw-bold">Categories</h6>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="fw-bold mb-0">Available Categories</h3>
+                                <select class='form-select' size="3">
+                                    {% for cat in categories %}
+                                        <option>{{ cat.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Row end  --> 
+
+        </form>
+
+        
+    </div> 
+{% endblock content %}
+
+{% block modal %}
+
+
+{% endblock modal %}
+
+{% block scripts %}
+
+
+    <!-- Jquery Core Js -->      
+    <script src="{{ url_for('static', filename='bundles/libscripts.bundle.js' )}}"></script>
+
+    <!-- Jquery Plugin -->  
+    <script src="{{ url_for('static', filename='plugin/multi-select/js/jquery.multi-select.js' )}}"></script>
+    <script src="{{ url_for('static', filename='bundles/dataTables.bundle.js' )}}"></script>
+
+    <!-- Jquery Page Js -->   
+    <script src="{{ url_for('static', filename='js/template.js') }}"></script>
+
+{% endblock scripts %}

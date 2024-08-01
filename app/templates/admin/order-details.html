@@ -1,0 +1,215 @@
+{% extends 'layout.html' %}  
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block styles %}
+<!--plugin css file -->
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/responsive.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/dataTables.bootstrap5.min.css') }}">
+{% endblock styles %}
+
+{% block content %} 
+    <div class="container-xxl"> 
+        <div class="row align-items-center"> 
+            <div class="border-0 mb-4"> 
+                <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                    <h3 class="fw-bold mb-0">Order Details: #{{ order.transaction_id }}</h3>
+                </div>
+            </div>
+        </div> <!-- Row end  -->
+        <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
+            <div class="col">
+                <div class="alert-success alert mb-0">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar rounded no-thumbnail bg-success text-light"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i></div>
+                        <div class="flex-fill ms-3 text-truncate">
+                            <div class="h6 mb-0">Order Created at</div>
+                            <span class="small">{{ order.date }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert-danger alert mb-0">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar rounded no-thumbnail bg-danger text-light"><i class="fa fa-user fa-lg" aria-hidden="true"></i></div>
+                        <div class="flex-fill ms-3 text-truncate">
+                            <div class="h6 mb-0">Name</div>
+                            <span class="small">{{ order.firstname }} {{ order.lastname }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert-warning alert mb-0">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar rounded no-thumbnail bg-warning text-light"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></div>
+                        <div class="flex-fill ms-3 text-truncate">
+                            <div class="h6 mb-0">Email</div>
+                            <span class="small">{{ order.email }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert-info alert mb-0">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar rounded no-thumbnail bg-info text-light"><i class="fa fa-phone-square fa-lg" aria-hidden="true"></i></div>
+                        <div class="flex-fill ms-3 text-truncate">
+                            <div class="h6 mb-0">Contact No</div>
+                            <span class="small">{{ order.phone }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Row end  -->
+        <div class="row g-3 mb-3 row-deck"> 
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+                        <h6 class="mb-0 fw-bold ">Order Summary</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="product-cart">
+                            <div class="checkout-table table-responsive">
+                                <table id="myCartTable" class="table display dataTable table-hover align-middle" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="product">Product Image</th>
+                                            <th>Product Name</th>
+                                            <th class="quantity">Quantity</th>
+                                            <th class="price">Price per product</th>
+                                            <th class="price">Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in products %}
+                                            <tr>
+                                                <td>
+                                                    <img src="{{ url_for('static', filename='images/product/'+product.image) }}" class="avatar rounded lg" alt="Product">
+                                                </td>
+                                                <td>
+                                                    <h6 class="title"> {{ product.title }}</h6>
+                                                </td>
+                                                <td>
+                                                    {{ product.purchase_quantity }}
+                                                </td>
+                                                <td>
+                                                    <p class="price">&#x20A6;{{ product.price_new }}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="price">&#x20A6;{{ product.cost }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+            
+        </div> <!-- Row end  -->
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <div class="card auth-detailblock">
+                    <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+                        <h6 class="mb-0 fw-bold ">Delivery Address</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">State</label>
+                                <span><strong>{{ order.state }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">City</label>
+                                <span><strong>{{ order.city }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Address:</label>
+                                <span><strong>{{ order.address }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Phone number:</label>
+                                <span><strong>{{ order.phone }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Email:</label>
+                                <span><strong>{{ order.email }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Address Description:</label>
+                                <span><strong>{{ order.description }}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+                        <h6 class="mb-0 fw-bold ">Status Orders</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Order Id</label>
+                                <span><strong>{{ order.transaction_id }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Status</label>
+                                <span><strong>{{ order.status }}</strong></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Amount:</label>
+                                <span><strong>&#x20A6;{{ order.amount }}</strong></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Authorization URL</label>
+                                <span><strong>{{ order.authorization_url }}</strong></span>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Access Code:</label>
+                                <span><strong>{{ order.access_code }}</strong></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label col-6 col-sm-5">Comment:</label>
+                                <span><strong>{{ order.message }}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Row end  -->
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+    <script src="{{ url_for('static', filename='bundles/libscripts.bundle.js') }}"></script>
+
+    <!-- Plugin Js -->
+    <script src="{{ url_for('static', filename='bundles/dataTables.bundle.js') }}"></script>  
+
+    <!-- Jquery Page Js -->
+    <script src="{{ url_for('static', filename='js/template.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+        $('#myCartTable')
+        .addClass( 'nowrap' )
+        .dataTable( {
+            responsive: true,
+            columnDefs: [
+                { targets: [-1, -3], className: 'dt-body-right' }
+            ]
+        });
+    });
+    </script>
+
+{% endblock scripts %}

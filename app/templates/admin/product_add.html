@@ -1,0 +1,305 @@
+{% extends 'layout.html' %}  
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block styles %}
+<!--plugin css file -->
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/multi-select/css/multi-select.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/dropify/dist/css/dropify.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/responsive.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='plugin/datatables/dataTables.bootstrap5.min.css') }}">
+{% endblock styles %}
+
+{% block content %}
+<div class="container-xxl">
+    
+    <form action="#" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="row align-items-center">
+            <div class="border-0 mb-4">
+                <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                    <h3 class="fw-bold mb-0">Products Add</h3>
+                    {{ form.submit(class="btn btn-primary btn-set-task w-sm-100 py-2 px-5 text-uppercase") }}
+                </div>
+            </div>
+        </div> <!-- Row end  -->  
+        
+        <div class="row g-3 mb-3">
+            <div class="col-xl-4 col-lg-4">
+                <div class="sticky-lg-top">
+                    <div class="card mb-3">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                            <h6 class="m-0 fw-bold">Pricing Info</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-12">
+                                    {{ form.price.label(class='form-label') }}
+                                    
+                                    {% if form.price.errors %}
+                                    {{ form.price(class='form-control form-control-lg is-invalid', value=form.price.data) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.price.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.price(class='form-control') }}
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                            <h6 class="m-0 fw-bold">Tags</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group demo-tagsinput-area">
+                                
+                                {% if form.tags.errors %}
+                                <div class="form-line">
+                                    {{ form.tags(class='form-control w-100 is-invalid', data_role="tagsinput", value=form.tags.data) }}
+                                </div>
+                                <div class="invalid-feedback">
+                                    {% for error in form.tags.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="form-line">
+                                    {{ form.tags(class='form-control w-100', data_role="tagsinput") }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                            <h6 class="m-0 fw-bold">Categories</h6>
+                        </div>
+                        <div class="card-body">
+                            {{ form.category.label(class='form-label') }}
+                            {{ form.category(class='form-select', size="3") }}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                            <h6 class="m-0 fw-bold">Inventory Info</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 align-items-center">
+                                <!--
+                                    <div class="col-md-12">
+                                        <label  class="form-label">SKU</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                -->
+                                <div class="col-md-12">
+                                    {{ form.quantity.label(class='form-label') }}
+                                    
+                                    {% if form.quantity.errors %}
+                                    {{ form.quantity(class='form-control is-invalid', value=form.quantity.data) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.quantity.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.quantity(class='form-control') }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-8 col-lg-8">
+                <div class="card mb-3">
+                    <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+                        <h6 class="mb-0 fw-bold ">Images</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-12">
+                                {{ form.image_file.label(class='form-label') }}
+                                    <small class="d-block text-muted mb-2">Only portrait or square images, 2M max and 2000px max-height.</small>
+                                {{ form.image_file(class='dropify', id="input-file-to-destroy", required='', data_allowed_formats="portrait square", data_max_file_size="2M", data_max_height="2000") }}
+                                {% if form.image_file.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.image_file.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.color.label(class='form-label w-100') }}
+                                
+                                {% if form.color.errors %}
+
+                                    {{ form.color(class='is-invalid', class='form-control', value=form.color.data) }}
+
+                                    <div class="invalid-feedback">
+                                        {% for error in form.color.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                {% else %}
+                                    {{ form.color(class='form-control') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+                        <h6 class="mb-0 fw-bold ">Basic information</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 align-items-center">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-4">
+                                    {{ form.brand.label(class='form-label') }}
+                                    
+                                    {% if form.brand.errors %}
+                                    {{ form.brand(class='form-control is-invalid', value=form.brand.data) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.brand.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.brand(class='form-control') }}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form.name.label(class='form-label') }}
+                                    
+                                    {% if form.name.errors %}
+                                    {{ form.name(class='form-control is-invalid', value=form.name.data) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.name.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.name(class='form-control') }}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form.page_title.label(class='form-label') }}
+                                    
+                                    {% if form.page_title.errors %}
+                                    {{ form.page_title(class='form-control is-invalid', value=form.page_title.data) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.page_title.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.page_title(class='form-control') }}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ form.description.label(class='form-label') }}
+                                    
+                                    {% if form.description.errors %}
+                                    {{ form.description(class='is-invalid', id="editor", value='form.description.data') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.description.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.description(id="editor") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row end  --> 
+        
+    </form>
+    
+    
+</div> 
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+<!-- Jquery Core Js -->      
+<script src="{{ url_for('static', filename='bundles/libscripts.bundle.js' )}}"></script>
+
+<!-- Jquery Plugin -->  
+<script src="{{ url_for('static', filename='js/ckeditor.js' )}}"></script>
+<script src="{{ url_for('static', filename='plugin/multi-select/js/jquery.multi-select.js' )}}"></script>
+<script src="{{ url_for('static', filename='plugin/bootstrap-tagsinput/bootstrap-tagsinput.js' )}}"></script>
+<script src="{{ url_for('static', filename='bundles/dropify.bundle.js' )}}"></script>
+<script src="{{ url_for('static', filename='bundles/dataTables.bundle.js' )}}"></script>
+
+<!-- Jquery Page Js -->   
+<script src="{{ url_for('static', filename='js/template.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        //Ch-editer
+        ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+        //Datatable
+        $('#myCartTable')
+        .addClass( 'nowrap' )
+        .dataTable( {
+            responsive: true,
+            columnDefs: [
+            { targets: [-1, -3], className: 'dt-body-right' }
+            ]
+        });
+        $('.deleterow').on('click',function(){
+            var tablename = $(this).closest('table').DataTable();  
+            tablename
+            .row( $(this)
+            .parents('tr') )
+            .remove()
+            .draw();
+            
+        } );
+        //Multiselect
+        $('#optgroup').multiSelect({ selectableOptgroup: true });
+    });
+    
+    $(function() {
+        $('.dropify').dropify();
+        
+        var drEvent = $('#dropify-event').dropify();
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+        
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('File deleted');
+        });
+        
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-dÃ©posez un fichier ici ou cliquez',
+                replace: 'Glissez-dÃ©posez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'DÃ©solÃ©, le fichier trop volumineux'
+            }
+        });
+    });
+    
+</script>
+
+{% endblock scripts %}
