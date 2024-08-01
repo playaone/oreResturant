@@ -3,16 +3,16 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-# from flask_mail import Mail
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_jwt_extended import JWTManager
 
 load_dotenv()
 db = SQLAlchemy()
 migrate = Migrate()
 bcrypt = Bcrypt()
-# mail = Mail()
 loginManager = LoginManager()
+jwt = JWTManager()
 
 
 loginManager.login_view = 'admin.admin_login'
@@ -33,13 +33,38 @@ def create_app():
     bcrypt.init_app(app)
     loginManager.init_app(app)
     
-    from app.public.routes import public
     from app.admin.routes import admin
     from app.errors.handlers import errors
     
-    app.register_blueprint(public)
+    from flask_restful import Api
+    
+    api = Api(app)
+    
     app.register_blueprint(admin)
     app.register_blueprint(errors)
+    
+    
+    from app.api.resource import Login, Registration, FetchAll, FetchOne, Discounted, FetchDrinks, Profile
+    
+    api.add_resource(Login, '/register')
+    api.add_resource(Registration, "/login")
+    api.add_resource(FetchAll, "/menus")
+    api.add_resource(FetchOne, "/menus/<int:id>")
+    api.add_resource(FetchDrinks, "/menus/drinks")
+    api.add_resource(Discounted, "/menus/discounted")
+    api.add_resource(Profile, "/profile")
+    
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return "Invalid login token", 401
+    
+    @jwt.expired_token_loader
+    def expired_token_callback(header, data):
+        return "Token expired", 401
+    
+    @jwt.unauthorized_loader
+    def unauthorized_callback(error):
+        return "Unauthorized!", 401
     
     
     with app.app_context():

@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     firstname = db.Column(db.String(50), nullable=False)
     lastname = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    type = db.Column(db.String(12), nullable=True, default='customer')
     posts = db.relationship('Product', backref='author', lazy=True)
     
     def get_reset_token(self, expires_sec=1800):
@@ -49,17 +50,11 @@ class Category(db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
-    price_new = db.Column(db.Float, nullable=False)
-    price_old = db.Column(db.Float)
-    quantity = db.Column(db.Integer)
-    page_title = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     image = db.Column(db.String(100))
-    publish_date = db.Column(db.Date(), default=datetime.datetime.now)
-    visibility = db.Column(db.Integer)
-    size = db.Column(db.String(30))
     description = db.Column(db.Text, nullable=False)
-    color = db.Column(db.String(100), nullable=False)
     tags = db.Column(db.String(200), nullable=False)
+    discount = db.Column(db.Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     

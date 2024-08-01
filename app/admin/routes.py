@@ -11,14 +11,29 @@ admin = Blueprint('admin', __name__)
 
 # ======================================================================================================================
 
+@admin.route('/')
 @admin.route('/admin/')
 @login_required
 def home():
     orders_count = Order.query.count()
     all_orders = Order.query.with_entities(func.sum(Order.amount).label('sum_amounts')).first()
-    avg_sales = all_orders.sum_amounts / orders_count
+    avg_sales =  all_orders.sum_amounts / orders_count if orders_count > 0 and all_orders > 0 else 0
     return render_template('admin/index.html', title='JayLinkUp Store', orders_count=orders_count, avg_sales=f'{avg_sales: .2f}')
 
+
+@admin.route('/admin/register/', methods=['POST', 'GET'])
+def admin_register():
+    form = AddUserForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, phone=form.phone.data, firstname=form.firstname.data, lastname=form.lastname.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        flash(message=f'User Added, password = {form.password.data}', category='success')
+        login_user(user)
+        return redirect(url_for('admin.home'))
+        
+    return render_template('admin/auth-signup.html', title='Add User', form=form)
 
 @admin.route('/admin/login/', methods=['POST', 'GET'])
 def admin_login():
@@ -61,7 +76,7 @@ def add_user():
     form = AddUserForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, phone=form.phone.data, firstname=form.firstname.data, lastname=form.lastname.data, password=hashed_password)
+        user = User(username=form.username.data, type=form.type.data, email=form.email.data, phone=form.phone.data, firstname=form.firstname.data, lastname=form.lastname.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash(message=f'User Added, password = {form.password.data}', category='success')
@@ -102,6 +117,7 @@ def edit_user(user_id):
         
         user.firstname=form.firstname.data
         user.lastname=form.lastname.data
+        user.type=form.type.data
         
         db.session.commit()
         flash(message=f'User details updated', category='success')
@@ -183,12 +199,9 @@ def add_product():
     if form.validate_on_submit():
         image = upload_image(form.image_file.data)
         product = Product(title=form.name.data,
-                          page_title=form.page_title.data,
                           description=form.description.data,
                           tags=form.tags.data,
-                          color=form.color.data,
-                          price_new=form.price.data,
-                          quantity=form.quantity.data,
+                          price=form.price.data,
                           image=image,
                           category=form.category.data,
                           category_id=form.category.data.id,

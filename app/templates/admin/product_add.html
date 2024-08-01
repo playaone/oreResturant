@@ -85,35 +85,7 @@
                             {{ form.category(class='form-select', size="3") }}
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
-                            <h6 class="m-0 fw-bold">Inventory Info</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-3 align-items-center">
-                                <!--
-                                    <div class="col-md-12">
-                                        <label  class="form-label">SKU</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                -->
-                                <div class="col-md-12">
-                                    {{ form.quantity.label(class='form-label') }}
-                                    
-                                    {% if form.quantity.errors %}
-                                    {{ form.quantity(class='form-control is-invalid', value=form.quantity.data) }}
-                                    <div class="invalid-feedback">
-                                        {% for error in form.quantity.errors %}
-                                        <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% else %}
-                                    {{ form.quantity(class='form-control') }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -136,23 +108,6 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="col-md-12">
-                                {{ form.color.label(class='form-label w-100') }}
-                                
-                                {% if form.color.errors %}
-
-                                    {{ form.color(class='is-invalid', class='form-control', value=form.color.data) }}
-
-                                    <div class="invalid-feedback">
-                                        {% for error in form.color.errors %}
-                                        <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    
-                                {% else %}
-                                    {{ form.color(class='form-control') }}
-                                {% endif %}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,20 +118,7 @@
                     <div class="card-body">
                         <div class="row g-3 align-items-center">
                             <div class="row g-3 align-items-center">
-                                <div class="col-md-4">
-                                    {{ form.brand.label(class='form-label') }}
-                                    
-                                    {% if form.brand.errors %}
-                                    {{ form.brand(class='form-control is-invalid', value=form.brand.data) }}
-                                    <div class="invalid-feedback">
-                                        {% for error in form.brand.errors %}
-                                        <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% else %}
-                                    {{ form.brand(class='form-control') }}
-                                    {% endif %}
-                                </div>
+                                
                                 <div class="col-md-4">
                                     {{ form.name.label(class='form-label') }}
                                     
@@ -189,20 +131,6 @@
                                     </div>
                                     {% else %}
                                     {{ form.name(class='form-control') }}
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-4">
-                                    {{ form.page_title.label(class='form-label') }}
-                                    
-                                    {% if form.page_title.errors %}
-                                    {{ form.page_title(class='form-control is-invalid', value=form.page_title.data) }}
-                                    <div class="invalid-feedback">
-                                        {% for error in form.page_title.errors %}
-                                        <span>{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% else %}
-                                    {{ form.page_title(class='form-control') }}
                                     {% endif %}
                                 </div>
                                 <div class="col-md-12">

@@ -40,7 +40,7 @@
                                         <td>{{ user.username }}</td>
                                         <td>{{ user.email }}</td>
                                         <td>{{ user.phone if user.phone else "N/A" }}</td>
-                                        <td>Administrator</td>
+                                        <td>{{ user.type }}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Basic outlined example">
                                                 <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn btn-outline-secondary"><i class="icofont-edit text-success"></i></a>

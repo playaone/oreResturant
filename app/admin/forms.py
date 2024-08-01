@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, TextAreaField, FileField, SubmitField, HiddenField, IntegerField, TelField, PasswordField
+from wtforms import StringField, DecimalField, TextAreaField, FileField, SubmitField, SelectField, IntegerField, TelField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
 from wtforms_alchemy import QuerySelectField
 from flask_wtf.file import FileField, FileAllowed, FileRequired, FileSize
@@ -8,6 +8,7 @@ from app.models import Category, User
 
 class AddUserForm(FlaskForm):
     username = StringField('Username', validators=[Length(min=4, max=30), DataRequired()])
+    type = SelectField('Username', validators=[DataRequired()], choices=['Customer', 'Staff', 'Admin'])
     firstname = StringField('First name', validators=[Length(min=2, max=30), DataRequired()])
     lastname = StringField('Last Name', validators=[Length(min=2, max=30), DataRequired()])
     email = StringField('Email Address', validators=[Email(), DataRequired()])
@@ -28,6 +29,7 @@ class AddUserForm(FlaskForm):
 
 class UpdateUserForm(FlaskForm):
     username = StringField('Username', validators=[Length(min=4, max=30), DataRequired()])
+    type = SelectField('Username', validators=[DataRequired()], choices=['Customer', 'Staff', 'Admin'])
     firstname = StringField('First name', validators=[Length(min=2, max=30), DataRequired()])
     lastname = StringField('Last Name', validators=[Length(min=2, max=30), DataRequired()])
     email = StringField('Email Address', validators=[Email(), DataRequired()])
@@ -43,15 +45,11 @@ class LoginUserForm(FlaskForm):
 
 class AddProductForm(FlaskForm):
     name = StringField('Product Name', validators=[DataRequired()])
-    brand = StringField('Product Brand', validators=[DataRequired()])
     tags = StringField('Tags', validators=[DataRequired()])
-    quantity = IntegerField('Total Stock Quantity', validators=[DataRequired()])
     category = QuerySelectField('Category', validators=[DataRequired()])
     price = DecimalField('Product Price', validators=[DataRequired()])
-    page_title = StringField('Page Title', validators=([Length(max=150)]))
     description = TextAreaField('Product Description')
     image_file = FileField('Product Images Upload', validators=[FileRequired(), FileSize(max_size=20000000, message='File size too large')])
-    color = StringField('Color', validators=[DataRequired()])
     submit = SubmitField('SAVE')
             
     

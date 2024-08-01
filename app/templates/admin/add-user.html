@@ -47,7 +47,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-6">
                     <div class="mb-2">
                         {{ form.username.label(class='form-label') }}
 
@@ -60,6 +60,22 @@
                             </div>
                         {% else %}
                             {{ form.username(class='form-control form-control-lg') }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-2">
+                        {{ form.type.label(class='form-label') }}
+
+                        {% if form.type.errors %}
+                            {{ form.type(class='form-select form-control-lg is-invalid', value=form.type.data) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.type.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.type(class='form-select form-control-lg') }}
                         {% endif %}
                     </div>
                 </div>
