@@ -8,7 +8,6 @@ from app.models import Category, User
 
 class AddUserForm(FlaskForm):
     username = StringField('Username', validators=[Length(min=4, max=30), DataRequired()])
-    type = SelectField('Username', validators=[DataRequired()], choices=['Customer', 'Staff', 'Admin'])
     firstname = StringField('First name', validators=[Length(min=2, max=30), DataRequired()])
     lastname = StringField('Last Name', validators=[Length(min=2, max=30), DataRequired()])
     email = StringField('Email Address', validators=[Email(), DataRequired()])
