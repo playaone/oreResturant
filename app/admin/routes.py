@@ -18,7 +18,7 @@ def home():
     orders_count = Order.query.count()
     all_orders = Order.query.with_entities(func.sum(Order.amount).label('sum_amounts')).first()
     avg_sales =  all_orders.sum_amounts / orders_count if orders_count > 0 and all_orders > 0 else 0
-    return render_template('admin/index.html', title='JayLinkUp Store', orders_count=orders_count, avg_sales=f'{avg_sales: .2f}')
+    return render_template('admin/index.html', orders_count=orders_count, avg_sales=f'{avg_sales: .2f}')
 
 
 @admin.route('/admin/register/', methods=['POST', 'GET'])
