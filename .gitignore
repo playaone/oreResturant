@@ -4,4 +4,3 @@ __pycache__
 migrations/
 instance/
 *.db
-run.py
