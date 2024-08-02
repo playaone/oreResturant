@@ -46,8 +46,8 @@ def create_app():
     
     from app.api.resource import Login, Registration, FetchAll, FetchOne, Discounted, FetchDrinks, Profile
     
-    api.add_resource(Login, '/register')
-    api.add_resource(Registration, "/login")
+    api.add_resource(Registration, '/register')
+    api.add_resource(Login, "/login")
     api.add_resource(FetchAll, "/menus")
     api.add_resource(FetchOne, "/menus/<int:id>")
     api.add_resource(FetchDrinks, "/menus/drinks")
