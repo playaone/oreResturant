@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, TextAreaField, FileField, SubmitField, SelectField, IntegerField, TelField, PasswordField
+from wtforms import StringField, DecimalField, TextAreaField, FileField, SubmitField, SelectField, EmailField, TelField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
 from wtforms_alchemy import QuerySelectField
 from flask_wtf.file import FileField, FileAllowed, FileRequired, FileSize
@@ -31,13 +31,13 @@ class UpdateUserForm(FlaskForm):
     type = SelectField('Username', validators=[DataRequired()], choices=['Customer', 'Staff', 'Admin'])
     firstname = StringField('First name', validators=[Length(min=2, max=30), DataRequired()])
     lastname = StringField('Last Name', validators=[Length(min=2, max=30), DataRequired()])
-    email = StringField('Email Address', validators=[Email(), DataRequired()])
+    email = EmailField('Email Address', validators=[Email(), DataRequired()])
     phone = TelField('Phone Number', validators=[DataRequired()])
     submit = SubmitField('Update')
        
 
 class LoginUserForm(FlaskForm):
-    email = StringField('Email Address', validators=[Email(), DataRequired()])
+    email = EmailField('Email Address', validators=[Email(), DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=30)])
     submit = SubmitField('SIGN IN')
     
